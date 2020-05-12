@@ -14,6 +14,22 @@ ll n,m;
 vector<ll> parent;
 vector<ll> rnk;
 
+/*
+
+6
+9
+5 4 9
+5 1 4
+4 3 5
+4 2 3
+4 1 1
+1 2 2
+3 2 3
+3 6 8
+2 6 7
+*/
+
+
 struct edge
 {
   ll u,v,wt;

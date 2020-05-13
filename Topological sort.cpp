@@ -12,33 +12,65 @@
 using namespace std;
 ll n,m;
 vector<ll> adj[2000009];
-vector<bool> vis;
- vector<ll> ans;
 
-void dfs(ll v)
+void dfs(ll v,vector<ll>& ans,vector<bool>& vis)
 {
   vis[v]=1;
 
   for(ll j:adj[v])
     if(!vis[j])
-      dfs(j);
+      dfs(j,ans,vis);
 
-    ans.pb(v+1);
+    ans.pb(v);
 }
 
 void top_sort()
 {
-  vis.assign(n,0);
+  vector<bool> vis(n,0);
+  vector<ll> ans;
 
   for(ll i=0;i<n;i++)
     if(!vis[i])
-      dfs(i);
+      dfs(i,ans,vis);
 
     reverse(ans.begin(),ans.end());
 
     for(auto i:ans)
-      cout<<i<<" ";
+      cout<<i+1<<" ";
     cout<<endl;
+
+}
+
+void kahn()
+{
+  vector<ll> ideg(n,0);
+  vector<ll> ans;
+
+  for(ll i=0;i<n;i++)
+    for(ll j:adj[i])
+      ideg[j]++;
+
+  queue<ll> q;
+  for(ll i=0;i<n;i++)
+    if(ideg[i]==0)
+      q.push(i);
+
+    while(!q.empty())
+    {
+      ll v=q.front();
+      q.pop();
+      ans.pb(v);
+
+      for(auto j:adj[v])
+        {
+          ideg[j]--;
+          if(ideg[j]==0)
+            q.push(j);
+        }
+    }
+
+    for(auto i:ans)
+      cout<<i+1<<" ";
 
 }
 int main()
@@ -59,5 +91,6 @@ for(ll i=0;i<m;i++)
 }
 
 top_sort();
+kahn();
 
 }

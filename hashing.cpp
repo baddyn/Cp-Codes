@@ -31,8 +31,6 @@ void find_hash(string s)
 
 bool check_equal(ll l1,ll r1,ll l2,ll r2)
 {
-    //call hash_find in main for calculn of hash array once in o(n) 
-    //and then this fn computes value in o(1)
     if(r1-l1!=r2-l2)
         return 0;
     if(l1==l2 and r1==r2)
@@ -59,8 +57,8 @@ bool check_equal(ll l1,ll r1,ll l2,ll r2)
 //counts #uniq substrings in a string
 ll uniq_substring(string s)
 {
-    find_hash(s);
     ll ct=0,n=s.size();
+    find_hash(s);
 
     for(ll len=1;len<=n;len++)
     {
@@ -81,8 +79,8 @@ ll uniq_substring(string s)
 
 void rabinkarp(string pat,string txt,vector<ll>&occur)
 {
-    find_hash(txt);
     ll p_size=pat.size(),t_size=txt.size(),sh1=0,sh2=0;
+    find_hash(txt);
 
     for(ll i=0;i<p_size;i++)
         sh1=(sh1+(pat[i]-'a'+1)*pr1[i]%mod1)%mod1,sh2=(sh2+(pat[i]-'a'+1)*pr2[i]%mod2)%mod2;
@@ -108,25 +106,25 @@ int main()
 fast;
 pre();
 
-ll t;
-cin>>t;
+//     string s;
+//     cin>>s;
+//find_hash(s);
 
-while(t--)
-{
-    string txt,pat;
-    cin>>txt>>pat;
-    vector<ll> occur;
+//ll ans=0,n=s.size();
 
-    rabinkarp(pat,txt,occur);
+// for(ll i=1;i<n-2;i+=2)
+//     if(check_equal(0,i/2,i/2+1,i) and check_equal(i+1,i+(n-i)/2,i+1+(n-i)/2,n-1))
+//     ans++;
+// cout<<ans<<'\n';
 
-    if(occur.empty())
-        cout<<"Not Found"<<'\n'<<'\n';
-    else
-    {
-        cout<<occur.size()<<'\n';
-        for(auto i:occur)
-            cout<<i+1<<" ";
-        cout<<'\n'<<'\n';
-    }
-}
+//cout<<uniq_substring(s)<<endl;
+
+string pat,txt;
+cin>>pat>>txt;
+vector<ll> occur;
+
+rabinkarp(pat,txt,occur);
+for(auto i:occur)
+cout<<i+1<<endl;
+
 }

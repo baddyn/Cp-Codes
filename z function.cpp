@@ -39,6 +39,36 @@ void stringmatch(string txt,string pat,vector<ll>& occur)
             occur.pb(i-p_size-1);
 }
 
+//smallest string for which s can be rep as s=t+t+t+.
+string compressedstring(string s)
+{
+	vector<ll> z=zfn(s);
+	ll n=s.size();
+	for(ll i=1;i<n;i++)
+		if(i+z[i]==n)
+			return s.substr(0,i);
+	return s;
+}
+
+ll uniq_susbtring(string s)
+{
+	ll ans=1,n=s.size();
+
+	for(ll i=1;i<n;i++)
+	{
+		string temp=s.substr(0,i);
+		temp+=s[i];
+
+		reverse(temp.begin(),temp.end());
+
+		vector<ll> z=zfn(temp);
+
+		ll zmax=*max_element(z.begin(),z.end());
+		ans=ans+i+1-zmax;
+	}
+	return ans;
+}
+
 int main()
 { 
     #ifndef ONLINE_JUDGE
@@ -55,7 +85,9 @@ while(t--)
    string s;
    cin>>s;
 
-   vector<ll> z=zfn(s);
+  // cout<<uniq_susbtring(s)<<endl;
+   //vector<ll> z=zfn(s);
+   // cout<<compressedstring(s);
 
    // t1+t1+t2+t2=string find # of ways
    // vector<ll> z1=zfn(st);

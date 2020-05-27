@@ -28,7 +28,7 @@ void find_hash(string s)
             hash1[i]=(hash1[i-1]+(s[i]-'a'+1)*pr1[i]%mod1)%mod1,hash2[i]=(hash2[i-1]+(s[i]-'a'+1)*pr2[i]%mod2)%mod2;
 }
 
-bool check(ll l1,ll r1,ll l2,ll r2)
+bool check_equal(ll l1,ll r1,ll l2,ll r2)
 {
     if(r1-l1!=r2-l2)
         return 0;
@@ -77,7 +77,7 @@ find_hash(s);
 ll ans=0,n=s.size();
 
 // for(ll i=1;i<n-2;i+=2)
-//     if(check(0,i/2,i/2+1,i) and check(i+1,i+(n-i)/2,i+1+(n-i)/2,n-1))
+//     if(check_equal(0,i/2,i/2+1,i) and check_equal(i+1,i+(n-i)/2,i+1+(n-i)/2,n-1))
 //     ans++;
 cout<<ans<<'\n';
 

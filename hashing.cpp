@@ -23,6 +23,7 @@ void pre()
 }
 void find_hash(string s)
 {
+    hash1.assign(s.size(),0),hash2.assign(s.size(),0);
     hash1[0]=hash2[0]=(s[0]-'a'+1);
     for(ll i=1;i<s.size();i++)
             hash1[i]=(hash1[i-1]+(s[i]-'a'+1)*pr1[i]%mod1)%mod1,hash2[i]=(hash2[i-1]+(s[i]-'a'+1)*pr2[i]%mod2)%mod2;
@@ -30,6 +31,8 @@ void find_hash(string s)
 
 bool check_equal(ll l1,ll r1,ll l2,ll r2)
 {
+    //call hash_find in main for calculn of hash array once in o(n) 
+    //and then this fn computes value in o(1)
     if(r1-l1!=r2-l2)
         return 0;
     if(l1==l2 and r1==r2)
@@ -53,6 +56,47 @@ bool check_equal(ll l1,ll r1,ll l2,ll r2)
     return 0;
 }
 
+//counts #uniq substrings in a string
+ll uniq_substring(string s)
+{
+    find_hash(s);
+    ll ct=0,n=s.size();
+
+    for(ll len=1;len<=n;len++)
+    {
+        set<ll> sett1,sett2;
+
+        for(ll i=0;i<=n-len;i++)
+        {
+            ll z1=0,z2=0;
+            if(i>0)z1=hash1[i-1],z2=hash2[i-1];
+            ll curh1=(hash1[i+len-1]-z1+mod1)%mod1,curh2=(hash2[i+len-1]-z2+mod2)%mod2;
+            curh1=(curh1*pr1[n-i-1])%mod1,curh2=(curh2*pr2[n-i-1])%mod2;
+            sett1.insert(curh1),sett2.insert(curh2);
+        }
+        ct=ct+min(sett1.size(),sett2.size());
+    }
+    return ct;
+}
+
+void rabinkarp(string pat,string txt,vector<ll>&occur)
+{
+    find_hash(txt);
+    ll p_size=pat.size(),t_size=txt.size(),sh1=0,sh2=0;
+
+    for(ll i=0;i<p_size;i++)
+        sh1=(sh1+(pat[i]-'a'+1)*pr1[i]%mod1)%mod1,sh2=(sh2+(pat[i]-'a'+1)*pr2[i]%mod2)%mod2;
+
+    for(ll i=0;i<t_size+1-p_size;i++)
+    {
+        ll z1=0,z2=0;
+        if(i>0)z1=hash1[i-1],z2=hash2[i-1];
+
+        ll curh1=(hash1[i+p_size-1]-z1+mod1)%mod1,curh2=(hash2[i+p_size-1]-z2+mod2)%mod2;
+
+        if(curh1==sh1*pr1[i]%mod1 and curh2==sh2*pr2[i]%mod2)occur.pb(i);
+    }
+}
 
 int main()
 { 
@@ -69,17 +113,20 @@ cin>>t;
 
 while(t--)
 {
-    string s;
-    cin>>s;
-hash1.assign(s.size(),0),hash2.assign(s.size(),0);
-find_hash(s);
+    string txt,pat;
+    cin>>txt>>pat;
+    vector<ll> occur;
 
-ll ans=0,n=s.size();
+    rabinkarp(pat,txt,occur);
 
-// for(ll i=1;i<n-2;i+=2)
-//     if(check_equal(0,i/2,i/2+1,i) and check_equal(i+1,i+(n-i)/2,i+1+(n-i)/2,n-1))
-//     ans++;
-cout<<ans<<'\n';
-
+    if(occur.empty())
+        cout<<"Not Found"<<'\n'<<'\n';
+    else
+    {
+        cout<<occur.size()<<'\n';
+        for(auto i:occur)
+            cout<<i+1<<" ";
+        cout<<'\n'<<'\n';
+    }
 }
 }

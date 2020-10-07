@@ -15,7 +15,6 @@ vector<ll> parent;
 vector<ll> rnk;
 
 /*
-
 6
 9
 5 4 9
@@ -35,7 +34,7 @@ struct edge
   ll u,v,wt;
 };
 
-bool fun(edge e1,edge e2)
+bool fun(edge &e1,edge &e2)
 {
   return e1.wt<e2.wt;
 }
